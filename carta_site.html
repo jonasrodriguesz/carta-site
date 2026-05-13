@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta</title>
+
+    <style>
+
+        body {
+
+            background-color: black;
+
+            color: white;
+
+            font-family: Georgia, serif;
+
+            margin: 0;
+            padding: 0;
+
+            overflow-x: hidden;
+        }
+
+        /* CANVAS DAS ESTRELAS */
+
+        #stars {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: -1;
+        }
+
+        /* TELA INICIAL */
+
+        .intro {
+
+            height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            padding: 20px;
+
+            background-image: url("assets/baixados (4).jpg");
+
+            background-size: contain;
+
+            background-position: center;
+
+            position: relative;
+        }
+
+        /* CAMADA ESCURA */
+
+        .intro::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        /* TEXTO E BOTÃO */
+
+        .intro h1,
+        .botao {
+
+            position: relative;
+
+            z-index: 1;
+        }
+
+        .intro h1 {
+
+            font-size: 42px;
+
+            font-weight: normal;
+
+            line-height: 1.5;
+
+            max-width: 700px;
+
+            margin-bottom: 40px;
+
+            opacity: 0;
+
+            animation: surgir 3s forwards;
+        }
+
+        /* BOTÃO */
+
+        .botao {
+
+            border: 1px solid white;
+
+            padding: 15px 40px;
+
+            cursor: pointer;
+
+            transition: 0.4s;
+
+            opacity: 0;
+
+animation: surgir 2s forwards;
+
+animation-delay: 2.5s;
+
+            
+        }
+
+        .botao:hover {
+
+            background-color: white;
+
+            color: black;
+        }
+
+        /* CARTA */
+
+        .container {
+
+            max-width: 700px;
+
+            margin: auto;
+
+            padding-top: 120px;
+            padding-bottom: 120px;
+
+            padding-left: 30px;
+            padding-right: 30px;
+
+            line-height: 1.9;
+
+            font-size: 22px;
+
+            display: none;
+
+            position: relative;
+
+            z-index: 1;
+        }
+
+        .inicio {
+
+            font-size: 42px;
+
+            margin-bottom: 60px;
+
+            line-height: 1.4;
+        }
+
+        p {
+
+            margin-bottom: 40px;
+
+            opacity: 0;
+        }
+
+        @keyframes surgir {
+
+    from {
+
+        opacity: 0;
+    }
+
+    to {
+
+        opacity: 1;
+    }
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ESTRELAS -->
+
+    <canvas id="stars"></canvas>
+
+    <!-- TELA INICIAL -->
+
+    <section class="intro" id="intro">
+
+        <h1 id="frase">
+    Talvez algumas pessoas aconteçam
+    para nunca irem embora completamente.
+</h1>
+
+        <div class="botao" onclick="entrar()">
+            Entrar
+        </div>
+
+    </section>
+
+    <!-- CARTA -->
+
+    <div class="container" id="carta">
+
+        <p class="inicio">
+            Talvez esta carta exista porque...
+        </p>
+
+        <p>
+            Existem pessoas que entram na nossa vida sem fazer barulho,
+            mas deixam a mente absurdamente barulhenta depois que vão embora.
+        </p>
+
+        <p>
+            E você foi exatamente assim.
+        </p>
+
+    </div>
+
+    <script>
+
+
+        /* BOTÃO ENTRAR */
+
+        function entrar() {
+
+            document.getElementById("intro").style.display = "none";
+
+            document.getElementById("carta").style.display = "block";
+
+            const textos = document.querySelectorAll("p");
+
+            textos.forEach((texto, index) => {
+
+                setTimeout(() => {
+
+                    texto.style.transition = "opacity 2s";
+
+                    texto.style.opacity = "1";
+
+                }, index * 1500);
+
+            });
+
+        }
+
+        /* ESTRELAS */
+
+        const canvas = document.getElementById("stars");
+
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const estrelas = [];
+
+        for (let i = 0; i < 120; i++) {
+
+            estrelas.push({
+
+                x: Math.random() * canvas.width,
+
+                y: Math.random() * canvas.height,
+
+                radius: Math.random() * 1.5,
+
+                opacity: Math.random()
+
+            });
+
+        }
+
+        function desenharEstrelas() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            estrelas.forEach((estrela) => {
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    estrela.x,
+                    estrela.y,
+                    estrela.radius,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fillStyle = `rgba(255,255,255,${estrela.opacity})`;
+
+                ctx.fill();
+
+            });
+
+            requestAnimationFrame(desenharEstrelas);
+
+        }
+
+        desenharEstrelas();
+
+    </script>
+
+</body>
+
+</html>
